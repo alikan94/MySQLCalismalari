@@ -45,6 +45,16 @@ SELECT * FROM personel;
   SORU1: Maasi 4000’den cok olan isci isimlerini + 5000 liradan fazla maas 
   alinan sehirleri gosteren sorguyu yaziniz
 ------------------------------------------------------------------------------*/
+select isim as isim_sehir, maas
+from personel
+where maas > 4000
+union
+select sehir, maas
+from personel
+where maas > 5000;
+
+
+-- hocanın cozumu
 select isim as isim_sehir, maas from personel where maas>4000
 union
 select sehir, maas from personel where maas>5000;
@@ -58,6 +68,12 @@ select sehir, maas from personel where maas>5000;
   personelin maaslarini yüksekten alçaga dogru siralayarak bir tabloda gosteren 
   sorguyu yaziniz.    
 ------------------------------------------------------------------------------*/  
+select maas, isim as isim_sehir from personel where isim= 'Mehmet Ozturk'
+union
+select maas, sehir from personel where sehir = 'Istanbul' order by maas desc;
+
+
+-- hocanin cozumu
 select maas, isim as isim_sehir from personel where isim = 'Mehmet Ozturk'
 union
 select maas, sehir from personel where sehir ='Istanbul' order by maas desc;
@@ -66,6 +82,13 @@ select maas, sehir from personel where sehir ='Istanbul' order by maas desc;
 /* -----------------------------------------------------------------------------
   SORU3: Honda,Ford ve Tofas’ta calisan  personelin ismini listeleyin
 ------------------------------------------------------------------------------*/  
+select sirket, isim from personel where sirket = 'Honda'
+union
+select sirket, isim from personel where sirket = 'Ford'
+union
+select sirket, isim from personel where sirket = 'Tofas';
+
+-- hocanın cozumu
 select isim, sirket from personel where sirket='Honda'
 union
 select isim, sirket  from personel where sirket='Ford'
@@ -74,14 +97,16 @@ select isim, sirket  from personel where sirket='Tofas';
 
 select isim, sirket from personel where sirket in ('Honda','Ford', 'Tofas');
 
-
-
-
-
 /* -----------------------------------------------------------------------------
   SORU4: 5000’den az maas alanlarin bilgileri ile, arti Honda calisani olmayanlarin bilgilerini
  alt alta listeleyen bir sorgu yaziniz. 
 ------------------------------------------------------------------------------*/ 
+select isim, maas, sirket from personel where maas < 5000
+union
+select isim, maas, sirket from personel where sirket != 'Honda';
+
+
+
 select isim, maas, sirket from personel where maas<5000
 union
 select isim, maas, sirket from personel where sirket != 'Honda';
@@ -92,6 +117,11 @@ select isim, maas, sirket from personel where sirket != 'Honda';
   SORU5: Ismi Mehmet Ozturk olanlarin sehirlerini + Istanbul’da calismayanlarin isimlerini ve 
   sehirlerini listeleyen sorguyu yaziniz.
 ------------------------------------------------------------------------------*/
+select isim, sehir from personel where isim = 'Mehmet Ozturk'
+union
+select isim, sehir from personel where sehir != 'Istanbul';
+
+-- hocanın cozumu
 select isim, sehir from personel where isim = 'Mehmet Ozturk'
 union
 select isim, sehir from personel WHERE sehir <> 'Istanbul';
@@ -125,6 +155,11 @@ select * from personel_bilgi;
   maasini, personel_bilgi tablosundan da (id ilk 3 hanesiyle kaydolmuş=123)
   tel ve cocuk sayisini yazdirin  
 ------------------------------------------------------------------------------*/    
+select sehir as sehir_tel, maas as maas_cocuk_sayisi from personel where id = '123456789'
+union
+select tel, cocuk_sayisi from personel_bilgi where id= '123';
+
+-- hocanın cozumu
 select sehir as sehir_tel , maas as maas_cocuk_sayisi from personel where id = 123456789
 union
 select tel, cocuk_sayisi from personel_bilgi where id = 123;
@@ -135,6 +170,13 @@ select tel, cocuk_sayisi from personel_bilgi where id = 123;
   SORU7: Personel tablosundan Istanbul veya Ankara’da calisanlarin id’lerini
  ve Personel_bilgi tablosundan 2 veya 3 cocugu olanlarin id lerini sorgulayiniz.
 ------------------------------------------------------------------------------*/
+select id from personel where sehir in('Istanbuk','Ankara')
+union
+select id from personel_bilgi where cocuk_sayisi in(2,3);
+
+
+
+-- hocanin cozumu
 select id from personel where sehir in('Istanbul', 'Ankara')
 union
 select id from personel_bilgi where cocuk_sayisi in (2, 3);
