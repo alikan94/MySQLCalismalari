@@ -82,6 +82,14 @@ where qa_dersler.ders_id = developer_dersler.ders_id;
 -- qa_dersler = A
 -- developer_dersler : B
 -- sorguyu sadeleştirmek için
+select A.ders_id, A.ders_ismi, A.ders_saati
+from qa_dersler as A
+inner join developer_dersler as B
+on A.ders_id = B.ders_id;
+
+
+
+
 select A.ders_id, A.ders_ismi, A.ders_saati from qa_dersler as A
 inner join developer_dersler as B
 on A.ders_id = B.ders_id;	-- 2 tabloyu burada birlestirdik.
@@ -110,13 +118,19 @@ on A.ders_id = B.ders_id;	-- 2 tabloyu burada birlestirdik.
 -- developer_dersler : B
 -- sorguyu sadeleştirmek için
 
+select QA.ders_id, QA.ders_ismi, QA.ders_saati
+from qa_dersler as QA
+left join developer_dersler as DEV
+on QA.ders_id = DEV.ders_id;
+
+-- -- hocanın cozumu
 select A.ders_id, A.ders_ismi, A.ders_saati from qa_dersler as A
 left join developer_dersler as B
-on A.ders_id = B.ders_id;
+on A.ders_id = B.ders_id;  -- bu left join
 
 select A.ders_id, A.ders_ismi, A.ders_saati from developer_dersler as B
 right join qa_dersler as A
-on A.ders_id = B.ders_id;
+on A.ders_id = B.ders_id; -- bu right join
 
 
 
