@@ -66,17 +66,9 @@ select * from siparisler;
 ------------------------------------------------------------------------------*/
 -- sirketler tablosu = A
 -- siparisler tablosu = B
-
-
-
-
-
--- sirketler tablosu = A
--- siparisler tablosu = B
-
-
-
-
+select sirket_isim, siparis_id, siparis_tarihi, sirketler.sirket_id from siparisler
+inner join sirketler
+on sirketler.sirket_id = siparisler.sirket_id;
     
 /*=============================== LEFT JOIN  ==================================
     
@@ -96,9 +88,15 @@ select * from siparisler;
   SORU2: sirketler tablosundaki tum sirketleri ve bu sirketlere ait olan 
   siparis_id ve siparis_tarihleri listeleyen bir sorgu yaziniz.
 ------------------------------------------------------------------------------*/   
+select sirket_isim, siparis_id, siparis_tarihi, sirketler.sirket_id
+from sirketler
+left join siparisler
+on sirketler.sirket_id = siparisler.sirket_id;
 
-
-
+select sirket_isim, siparis_id, siparis_tarihi, sirketler.sirket_id
+from siparisler
+right join sirketler
+on sirketler.sirket_id = siparisler.sirket_id;
           
 /*======================================== RIGHT JOIN  =============================================
     
@@ -119,7 +117,10 @@ select * from siparisler;
 ------------------------------------------------------------------------------*/   
 -- sirketler tablosu = A
 -- siparisler tablosu = B
-
+select siparis_id, siparis_tarihi, sirket_isim 
+from sirketler
+right join siparisler
+on sirketler.sirket_id = siparisler.sirket_id;
 
 
 
@@ -148,17 +149,15 @@ select * from siparisler;
   siparis_id ve siparis_tarihleri listeleyen bir sorgu yaziniz.
 ------------------------------------------------------------------------------*/ 
 
-
-
-
-
-
-
-
-
-
-
-
+select sirketler.sirket_id, sirket_isim, siparis_id, siparis_tarihi
+from sirketler
+left join siparisler
+on sirketler.sirket_id = siparisler.sirket_id
+union
+select sirketler.sirket_id, sirket_isim, siparis_id, siparis_tarihi
+from sirketler
+right join siparisler
+on sirketler.sirket_id = siparisler.sirket_id;
 
 -- ================================================================================
 
@@ -184,7 +183,7 @@ select * from siparisler;
       maas          int,
       bolum_id      int
     );
-    
+    select * from bolumler;
   
     INSERT INTO personel VALUES (7369,'AHMET','KATIP',1111,800,20);
     INSERT INTO personel VALUES (7499,'BAHATTIN','SATISE',1222,1600,30);
@@ -210,6 +209,12 @@ select * from siparisler;
 ------------------------------------------------------------------------------*/ 
 -- P: personel tablo
 -- B: bolumler tablo
+select personel_isim, bolum_isim 
+from personel
+right join bolumler
+on personel.bolum_id = bolumler.bolum_id
+where bolum_isim in('SATIS','MUHASEBE')
+order by bolum_isim, personel_isim
 
 
 
@@ -221,7 +226,12 @@ select * from siparisler;
 
 -- P: personel tablo
 -- B: bolumler tablo
-
+select personel_isim, bolum_isim
+from personel
+right join bolumler
+on personel.bolum_id = bolumler.bolum_id
+where bolum_isim in('SATIS','ISLETME','DEPO')
+order by personel_isim;
 
 
 
@@ -232,8 +242,11 @@ select * from siparisler;
 ------------------------------------------------------------------------------*/  
 -- P: personel tablo
 -- B: bolumler tablo
-
-
+select personel_isim, bolum_isim, maas
+from personel
+right join bolumler
+on personel.bolum_id = bolumler.bolum_id
+order by bolum_isim desc, maas;
 
 /* -----------------------------------------------------------------------------
   SORU4: SATIS ve MUDURLUK bolumlerinde calisan personelin maaslari 2000'den 
@@ -242,15 +255,21 @@ select * from siparisler;
 ------------------------------------------------------------------------------*/   
 -- P: personel tablo
 -- B: bolumler tablo
-
-
-
-
+select bolum_isim, personel_isim,  maas
+from bolumler
+right join personel
+on personel.bolum_id = bolumler.bolum_id
+where bolum_isim in('SATIS','MUDURLUK') and maas > 2000
+order by bolum_isim, personel_isim;
 
 /* -----------------------------------------------------------------------------
   SORU5: MUDUR'u Harun veya Emine olan personelin bolumlerini,isimlerini,  
   maaslarini ve ayrica MUDUR isimlerini 
   (emine kimin müdürüyse onun satirinda yazsin) 
 ------------------------------------------------------------------------------*/   
-
-
+select B.bolum_isim, P.personel_isim, P.maas, (select personel_isim from personel where P.mudur_id = personel_id ) as mudur
+from bolumler as B
+right join personel as P
+on B.bolum_id = P.bolum_id
+where mudur_id in(1222,1333);
+select personel_isim from personel where mudur_id = personel_id;
